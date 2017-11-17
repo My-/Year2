@@ -1,4 +1,4 @@
-package mineSweeper.core;
+package game.mineSweeper.core;
 
 import java.util.function.Predicate;
 
@@ -31,6 +31,9 @@ public class PosValue extends Position {
     }
     public static PosValue of(int x, int y, int value){
         return new PosValue(x, y, value);
+    }
+    public static PosValue of(Position position, int value){
+        return new PosValue(position, value);
     }
 
 
