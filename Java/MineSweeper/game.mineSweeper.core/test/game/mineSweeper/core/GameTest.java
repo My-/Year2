@@ -32,10 +32,15 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("Testing: get(Position):char")
+    @DisplayName("Testing: getValue(Position):char")
     void getValue_Test(){
         game = new Game(Data.MAP[n]);
-        // TODO:
+        Random random = new Random();
+
+        Position pos = Position.of(1, 1);
+
+        char ch = game.getValue(pos);
+        assertEquals('?', ch, "\""+ pos +" != "+ ch +" ("+ (int)ch +")\"");
 
     }
 
@@ -78,14 +83,14 @@ class GameTest {
         Random random = new Random();
         IntPredicate validNumbers = num -> 0 <= num && num < 10;
         IntPredicate positive = num -> num >= 0;
-        IntConsumer goodNumbers = num -> assertEquals(num, Game.toSymbol(num), "Fail goodNumbers "+ num);
+        IntConsumer goodNumbers = num -> assertEquals(num +'0', Game.toSymbol(num), "Fail goodNumbers "+ num);
         IntUnaryOperator badNumbers = num -> {
-            assertFalse(num == Game.toSymbol(num), "Fail badNumbers: "+ num);
+            assertFalse(num+'0' == Game.toSymbol(num), "Fail badNumbers: "+ num);
             return num;
         };
         IntConsumer goodCharacters = num -> {
             char ch = Game.toSymbol(num);
-            assertEquals((char)num+'0', ch, "Fail goodCharacters: "+num +" ("+ (char)num +") NOT "+(int)ch +"("+ ch +")" );
+            assertEquals(num, ch, "Fail goodCharacters: "+num +" ("+ (char)num +") NOT "+(int)ch +"("+ ch +")" );
         };
 
 //        for(int i = n; i > 0; i--){

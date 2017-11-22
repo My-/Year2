@@ -1,18 +1,24 @@
 package game.mineSweeper.core;
 
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-public class Game {
+public class Game implements Iterable<PosValue>{
     /** Fields **/
     private MineMap userMap;
     private MineMap mineMap;
     private int minesLeft;
 
     /** Constructors **/
-    public Game(String[] data) {
+    Game(String[] data) {
         mineMap = new MineMap(data[1]);
         userMap = new MineMap(data[2]);
         // TODO: map validation
+        minesLeft = mineMap.MINES;
     }
 
     /** Factory **/
@@ -33,6 +39,12 @@ public class Game {
     public char getValue(Position position){
         int n = userMap.getValueAsInt(position);
         return toSymbol(n);
+    }
+    public PosValue getPosValue(Position position){
+        return userMap.getValue(position);
+    }
+    public int getMinesTotal(){
+        return mineMap.MINES;
     }
     public int getMinesLeft() {
         return minesLeft;
@@ -55,18 +67,39 @@ public class Game {
         return this;
     }
     public static char toSymbol(int value){
-        return (char)(0 > value || value > 9 ? value +'0': value);
+        return (char)(0 > value || value > 9 ? value: value +'0');
+    }
+
+    public int sizeX(){
+        return userMap.size_X;
+    }
+    public int sizeY(){
+        return userMap.size_Y;
     }
 
     /** Functions **/
-    public final static Predicate<Position> inLimits_X = p -> 0 <= p.X && p.X < MineMap.size_X;
-    public final static Predicate<Position> inLimits_Y = p -> 0 <= p.Y && p.Y < MineMap.size_Y;
+    public final static Predicate<Position> inLimits_X = pos-> 0 <= pos.X && pos.X < MineMap.size_X; // wrong
+    public final static Predicate<Position> inLimits_Y = p -> 0 <= p.Y && p.Y < MineMap.size_Y; // wrong
     public final static Predicate<Position> inLimits = inLimits_X.and(inLimits_Y); // two predicates combine
     //    public final static Predicate<PosValue> isMine = p -> p.getValue() == PosValue.MINE;
     public final static Predicate<PosValue> isMine = PosValue::isMine;
-    public final static Predicate<PosValue> isNumber = p -> 0 <= p.getValue() && p.getValue() < 10;
+    public final static Predicate<PosValue> isNumber = p -> 0 <= p.getValue() && p.getValue() < 10; // TODO: move to game controller???
     public final static Predicate<PosValue> isUnknown = p -> p.getValue() == PosValue.UNKNOWN;
     public final static Predicate<PosValue> isClose = isUnknown;
     // https://stackoverflow.com/questions/21488056/how-to-negate-a-method-reference-predicate
     public final static Predicate<PosValue> isOpen = isClose.negate();
+
+    @Override
+    public Iterator<PosValue> iterator() {
+        return userMap.iterator();
+    }
+
+    @Override
+    public Spliterator<PosValue> spliterator() {
+        return Spliterators.spliteratorUnknownSize(this.iterator(), Spliterator.CONCURRENT);
+    }
+
+    public Stream<PosValue> stream() {
+        return StreamSupport.stream(this.spliterator(), true);
+    }
 }
