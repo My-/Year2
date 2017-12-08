@@ -44,6 +44,6 @@
 > **Information System** is an arangment of people, data, processes, and informatin technology that interact to collect processes, store, and provide an outout the informatin needed to support an organizarion.<br>
 > **Information Technology** is contemporary(up to date) term that describes the combination of comuter technology with telecuminication technology. <br>
 > **Transacton Procesing System (TPS)** is an information sysytem that captures and process data about bussiness transactions.<br>
-> **Managment Informatin System (MIS)** is an informatin system that provides for managment-oriented reporting based or transaction procesing and operatins of the organization.<br>
+> **Managment Informatin System (MIS)** is an informatin system that provides for managment-oriented reporting based or transaction procesing and operatins of the organization.<br>a
 
 - #### System development life cycle
